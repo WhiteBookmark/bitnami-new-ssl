@@ -1,6 +1,6 @@
 # Adding New SSL & Domain in Bitnami Multisite WordPress
 
-## Use bncert Command
+## 1- Use bncert Command
 
 First run this command for any domain for which you need SSL:
 
@@ -8,7 +8,7 @@ First run this command for any domain for which you need SSL:
 
 Only enter 1 domain name every time you run the command. This will generate a new SSL for that domain and store in appropriate directory.
 
-## Add new virtual host in httpd-vhosts.conf file
+## 2- Add new virtual host in httpd-vhosts.conf file
 
 Add following block of code in your httpd-vhosts.conf file:
 
@@ -83,7 +83,7 @@ Sub-domain would be:
 
 SSLCertificateFile & SSLCertificateKeyFile directory will contain new SSL with a different file name.
 
-## Restart apache
+## 3- Restart apache
 
 Restart apache by running command:
 
@@ -95,6 +95,48 @@ Or
 
 Apache would restart now in case there are no syntax errors
 
-## Replace the crontab file
+## 4- Create a crontab file and save on your PC
 
+Every time we use bncert-tool, it will remove all crontab jobs and just add 1 for the latest SSL it generated.
 
+Generate a crontab file on your PC as a backup and add new domain name whenver you generate a new SSL:
+
+```
+ 0 0 * * * sudo /opt/bitnami/letsencrypt/lego --path /opt/bitnami/letsencrypt --email="pvelinov@gmail.com" --http --http-timeout 30 --http.webroot /opt/bitnami/apps/letsencrypt --domains=lionscredit.com renew && sudo /opt/bitnami/apache2/bin/httpd -f /opt/bitnami/apache2/conf/httpd.conf -k graceful # bncert-autorenew
+
+ 0 0 * * * sudo /opt/bitnami/letsencrypt/lego --path /opt/bitnami/letsencrypt --email="pvelinov@gmail.com" --http --http-timeout 30 --http.webroot /opt/bitnami/apps/letsencrypt --domains=metamorfeus.com renew && sudo /opt/bitnami/apache2/bin/httpd -f /opt/bitnami/apache2/conf/httpd.conf -k graceful # bncert-autorenew
+
+ 0 0 * * * sudo /opt/bitnami/letsencrypt/lego --path /opt/bitnami/letsencrypt --email="pvelinov@gmail.com" --http --http-timeout 30 --http.webroot /opt/bitnami/apps/letsencrypt --domains=myartgallery.ca renew && sudo /opt/bitnami/apache2/bin/httpd -f /opt/bitnami/apache2/conf/httpd.conf -k graceful # bncert-autorenew
+
+ 0 0 * * * sudo /opt/bitnami/letsencrypt/lego --path /opt/bitnami/letsencrypt --email="pvelinov@gmail.com" --http --http-timeout 30 --http.webroot /opt/bitnami/apps/letsencrypt --domains=test.smarttsys.com renew && sudo /opt/bitnami/apache2/bin/httpd -f /opt/bitnami/apache2/conf/httpd.conf -k graceful # bncert-autorenew
+
+ 0 0 * * * sudo /opt/bitnami/letsencrypt/lego --path /opt/bitnami/letsencrypt --email="pvelinov@gmail.com" --http --http-timeout 30 --http.webroot /opt/bitnami/apps/letsencrypt --domains=testaz.advancedharmony.org renew && sudo /opt/bitnami/apache2/bin/httpd -f /opt/bitnami/apache2/conf/httpd.conf -k graceful # bncert-autorenew
+
+ 0 0 * * * sudo /opt/bitnami/letsencrypt/lego --path /opt/bitnami/letsencrypt --email="pvelinov@gmail.com" --http --http-timeout 30 --http.webroot /opt/bitnami/apps/letsencrypt --domains=test.testaz.advancedharmony.org renew && sudo /opt/bitnami/apache2/bin/httpd -f /opt/bitnami/apache2/conf/httpd.conf -k graceful # bncert-autorenew
+
+ 0 0 * * * sudo /opt/bitnami/letsencrypt/lego --path /opt/bitnami/letsencrypt --email="pvelinov@gmail.com" --http --http-timeout 30 --http.webroot /opt/bitnami/apps/letsencrypt --domains=test.otinyhouse.com renew && sudo /opt/bitnami/apache2/bin/httpd -f /opt/bitnami/apache2/conf/httpd.conf -k graceful # bncert-autorenew
+
+ 0 0 * * * sudo /opt/bitnami/letsencrypt/lego --path /opt/bitnami/letsencrypt --email="pvelinov@gmail.com" --http --http-timeout 30 --http.webroot /opt/bitnami/apps/letsencrypt --domains=otinyhouse.com renew && sudo /opt/bitnami/apache2/bin/httpd -f /opt/bitnami/apache2/conf/httpd.conf -k graceful # bncert-autorenew
+```
+
+## 5- Replace the crontab file
+
+First find current crontab directory and file name by running command:
+
+`sudo crontab -e`
+
+Open in nano editor or your preferred and see what is the file name and directory
+
+Example: /tmp/crontab.uCOkax/crontab
+
+Go to that directory and replace the crontab file or copy paste from your file to the server's crontab file.
+
+## 6- Restart cron
+
+If you copy paste using `sudo crontab -e` then you don't need to restart crontab. If you replace or edit the file any other way then run command to restart crontab:
+
+`sudo service cron reload`
+
+or wherever cron is located:
+
+`/etc/init.d/cron reload`
