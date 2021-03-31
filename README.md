@@ -133,7 +133,7 @@ Go to that directory and replace the crontab file or copy paste from your file t
 
 ## 6- Restart cron
 
-If you copy paste using `sudo crontab -e` then you don't need to restart crontab. If you replace or edit the file any other way then run command to restart crontab:
+If you copy paste using `crontab -e` then you don't need to restart crontab. If you replace or edit the file any other way then run command to restart crontab:
 
 `sudo service cron reload`
 
