@@ -123,7 +123,7 @@ Generate a crontab file on your PC as a backup and add new domain name whenver y
 
 First find current crontab directory and file name by running command:
 
-`sudo crontab -e`
+`crontab -e`
 
 Open in nano editor or your preferred and see what is the file name and directory
 
